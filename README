@@ -1,0 +1,24 @@
+This is extension for SmartFoxServer.
+
+It allow for guest to login or for registered users.
+
+You must change the database name in the AuthorizeExtension.java.
+
+mongo = new Mongo("localhost");
+db = mongo.getDB( "games_development" );
+users = db.getCollection("users");
+
+Do what you want :-)
+
+It return the generate session back to the Flash API Client, use it for whatever you want later in the game.
+
+It only check against the DB if the user enter password.
+
+This is how my collection looks like.
+
+{ "_id" : ObjectId("4e4c1b6853aaa95c3dab8ac9"), "nickname" : "jamal", "email" : "test@test.com", "password_digest" : "b80587d3ea099bba190ed8111f38121dc3514460", "session" : "2E931AAA9086D3D81E2C640F667B38BD" }
+{ "_id" : ObjectId("4e4c5580c2e6d19c17593612"), "nickname" : "test", "session" : "16E9C076E1BC490363EB4690317AC23C", "is_guest" : true }
+
+You can find me at SmartFoxServer.com forum if you need any help :D
+
+Thanks :)
