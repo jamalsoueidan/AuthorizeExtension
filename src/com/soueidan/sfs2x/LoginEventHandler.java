@@ -37,7 +37,7 @@ public class LoginEventHandler extends BaseServerEventHandler {
 		
 		String joinRoom = AuthorizeExtension.LOBBY;
 		
-		if ( customData.getUtfString("session") == null ) {
+		if ( customData == null || customData.getUtfString("session") == null ) {
 			lobbyLoginAsGuestOrRegistered(event);
 		} else {
 			joinRoom = customData.getUtfString("room");
