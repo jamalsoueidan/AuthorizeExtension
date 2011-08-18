@@ -36,6 +36,7 @@ public class AuthorizeExtension extends SFSExtension implements ISFSExtension {
 	public void destroy()
 	{
 	    super.destroy();
+	    mongo.close();
 	    trace("Database Login Extension -- stopped");
 	}
 	

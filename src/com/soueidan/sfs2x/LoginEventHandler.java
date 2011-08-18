@@ -4,10 +4,12 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 import com.mongodb.*;
 import com.smartfoxserver.bitswarm.sessions.ISession;
 import com.smartfoxserver.v2.core.*;
+import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.exceptions.*;
 import com.smartfoxserver.v2.extensions.*;
 
@@ -42,14 +44,14 @@ public class LoginEventHandler extends BaseServerEventHandler {
 			handleGuest(event);
 		} else {
 			handleUser(event);
-		}		
-		
-		if ( document == null ) {
-			SFSErrorData data = new SFSErrorData(SFSErrorCode.LOGIN_BAD_PASSWORD);
-			data.addParameter(userName);
 			
-			throw new SFSLoginException("Login failed for user: "  + userName,data);
-		}
+			if ( document == null ) {
+				SFSErrorData data = new SFSErrorData(SFSErrorCode.LOGIN_BAD_PASSWORD);
+				data.addParameter(userName);
+				
+				throw new SFSLoginException("Login failed for user: "  + userName,data);
+			}
+		}		
 		
 		session.setProperty("isRegistered", isRegistered);
 		session.setProperty("session", generateSession);
@@ -90,26 +92,21 @@ public class LoginEventHandler extends BaseServerEventHandler {
 
 		DBCollection users = AuthorizeExtension.users;
 		
-		BasicDBObject query = new BasicDBObject();
-		query.put("nickname", userName);
-		DBCursor cursor = users.find(query);
+		// Create random num 0..99
+		Random randomGenerator = new Random();
+		userName = userName + randomGenerator.nextInt(100);
 		
-        if ( !cursor.hasNext() ) {
-        	cursor.close();
-        	
-        	BasicDBObject newUser = new BasicDBObject();
-			newUser.put("nickname", userName);
-			newUser.put("session", generateSession);
-	    	users.insert(newUser);
-	    	
-	    	cursor = users.find(query);
-        }
-
-        document = cursor.next();
-        document.put("session", generateSession);
-        document.put("is_guest", true);
+		// Set new Name
+		ISFSObject outData = (ISFSObject) event.getParameter(SFSEventParam.LOGIN_OUT_DATA);
+        outData.putUtfString(SFSConstants.NEW_LOGIN_NAME, userName);
         
-        users.update(query, document);
+		// Insert DB
+		BasicDBObject newUser = new BasicDBObject();
+		newUser.put("nickname", userName);
+		newUser.put("session", generateSession);
+		newUser.put("is_guest", true);
+		
+    	users.insert(newUser);
         
 		isRegistered = false;
 	}
