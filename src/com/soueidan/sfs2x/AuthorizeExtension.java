@@ -7,9 +7,12 @@ import com.smartfoxserver.v2.extensions.SFSExtension;
 
 public class AuthorizeExtension extends SFSExtension implements ISFSExtension {
 	
+	static public String LOBBY = "Lobby";
+	
 	static public Mongo mongo;
 	static public DB db;
 	static public DBCollection users;
+	
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
@@ -29,6 +32,8 @@ public class AuthorizeExtension extends SFSExtension implements ISFSExtension {
 		
 		addEventHandler(SFSEventType.USER_LOGIN, LoginEventHandler.class);
 		addEventHandler(SFSEventType.USER_JOIN_ZONE, ZoneJoinEventHandler.class);
+		
+		addRequestHandler("createCustomRoom", createCustomRoom.class);
 	}
 	
 	

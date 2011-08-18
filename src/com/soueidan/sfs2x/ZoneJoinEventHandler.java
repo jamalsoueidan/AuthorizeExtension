@@ -13,8 +13,11 @@ import com.smartfoxserver.v2.extensions.BaseServerEventHandler;
 public class ZoneJoinEventHandler extends BaseServerEventHandler {
 
 	@Override
-	public void handleServerEvent(ISFSEvent event) throws SFSException {
+	public void handleServerEvent(ISFSEvent event) throws SFSException {		
 		User user = (User) event.getParameter(SFSEventParam.USER); 
+		String joinRoomName = (String) user.getSession().getProperty("room");
+		
+		trace("Joining room:", joinRoomName);
 		
 		UserVariable isRegistered = new SFSUserVariable("isRegistered", user.getSession().getProperty("isRegistered"));
 		UserVariable session = new SFSUserVariable("session", user.getSession().getProperty("session"));
@@ -22,12 +25,13 @@ public class ZoneJoinEventHandler extends BaseServerEventHandler {
 		List<UserVariable> userVariables = Arrays.asList(isRegistered, session);
 		getApi().setUserVariables(user, userVariables);
 
-		Room lobby = getParentExtension().getParentZone().getRoomByName("Lobby");
+		Room room = getParentExtension().getParentZone().getRoomByName(joinRoomName);
 		
-		if (lobby == null)
+		if (room == null) {
 			throw new SFSException("The Lobby Room was not found! Make sure a Room called 'The Lobby' exists in the Zone to make this example work correctly.");
+		}
 		
-		getApi().joinRoom(user, lobby);
+		getApi().joinRoom(user, room);
 	}
 
 }
