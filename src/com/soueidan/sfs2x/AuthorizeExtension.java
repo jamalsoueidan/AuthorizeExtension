@@ -4,6 +4,9 @@ import com.mongodb.*;
 import com.smartfoxserver.v2.core.SFSEventType;
 import com.smartfoxserver.v2.extensions.ISFSExtension;
 import com.smartfoxserver.v2.extensions.SFSExtension;
+import com.soueidan.sfs2x.eventHandlers.LoginEventHandler;
+import com.soueidan.sfs2x.eventHandlers.ZoneJoinEventHandler;
+import com.soueidan.sfs2x.requestHandlers.CreateCustomRoomRequestHandler;
 
 public class AuthorizeExtension extends SFSExtension implements ISFSExtension {
 	
@@ -33,7 +36,7 @@ public class AuthorizeExtension extends SFSExtension implements ISFSExtension {
 		addEventHandler(SFSEventType.USER_LOGIN, LoginEventHandler.class);
 		addEventHandler(SFSEventType.USER_JOIN_ZONE, ZoneJoinEventHandler.class);
 		
-		addRequestHandler("createCustomRoom", createCustomRoom.class);
+		addRequestHandler(RequestHandler.CREATE_CUSTOM_ROOM, CreateCustomRoomRequestHandler.class);
 	}
 	
 	

@@ -1,4 +1,4 @@
-package com.soueidan.sfs2x;
+package com.soueidan.sfs2x.requestHandlers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,10 +11,11 @@ import com.smartfoxserver.v2.entities.variables.RoomVariable;
 import com.smartfoxserver.v2.entities.variables.SFSRoomVariable;
 import com.smartfoxserver.v2.exceptions.*;
 import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
+import com.soueidan.sfs2x.AuthorizeExtension;
 
-public class createCustomRoom extends BaseClientRequestHandler {
+public class CreateCustomRoomRequestHandler extends BaseClientRequestHandler {
 
-	static public String GROUP_GAME = "Tawle";
+	static public String GROUP_GAME = "games";
 	static public int MAX_USERS = 2;
 	
 	private User userInviter;
@@ -38,9 +39,7 @@ public class createCustomRoom extends BaseClientRequestHandler {
 		List<User> users = Arrays.asList(userInviter, userInvitee);
 		
 		AuthorizeExtension extension = (AuthorizeExtension) getParentExtension();
-		extension.send("createCustomRoom", data, users);
-		
-		//getApi().sendExtensionResponse("ROOM_ADD", null, extension.getParentRoom().getUserList(), extension.getParentRoom(), false); 
+		extension.send("createCustomRoom", data, users); 
 	}
 
 	private void createRoom() {
@@ -50,7 +49,7 @@ public class createCustomRoom extends BaseClientRequestHandler {
 		setting.setGroupId(GROUP_GAME);
 		setting.setGame(true);
 		setting.setMaxUsers(MAX_USERS);
-		setting.setAutoRemoveMode(SFSRoomRemoveMode.WHEN_EMPTY);
+		setting.setAutoRemoveMode(SFSRoomRemoveMode.WHEN_EMPTY_AND_CREATOR_IS_GONE);
 		setting.setUseWordsFilter(true);
 		setting.setName(roomName);
 		setting.setRoomVariables(getRoomVariables());

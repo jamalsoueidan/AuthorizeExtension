@@ -1,4 +1,4 @@
-package com.soueidan.sfs2x;
+package com.soueidan.sfs2x.eventHandlers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +9,7 @@ import com.smartfoxserver.v2.entities.variables.SFSUserVariable;
 import com.smartfoxserver.v2.entities.variables.UserVariable;
 import com.smartfoxserver.v2.exceptions.SFSException;
 import com.smartfoxserver.v2.extensions.BaseServerEventHandler;
+import com.soueidan.sfs2x.requestHandlers.CreateCustomRoomRequestHandler;
 
 public class ZoneJoinEventHandler extends BaseServerEventHandler {
 
@@ -28,10 +29,13 @@ public class ZoneJoinEventHandler extends BaseServerEventHandler {
 		Room room = getParentExtension().getParentZone().getRoomByName(joinRoomName);
 		
 		if (room == null) {
-			throw new SFSException("The Lobby Room was not found! Make sure a Room called 'The Lobby' exists in the Zone to make this example work correctly.");
+			throw new SFSException("The " + joinRoomName + " Room was not found!");
 		}
 		
+		//getApi().sendExtensionResponse("", arg1, arg2, arg3, arg4)
 		getApi().joinRoom(user, room);
+
+		trace("--------------------------------------------------------");
 	}
 
 }

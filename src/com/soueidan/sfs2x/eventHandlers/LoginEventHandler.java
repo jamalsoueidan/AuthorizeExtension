@@ -1,4 +1,4 @@
-package com.soueidan.sfs2x;
+package com.soueidan.sfs2x.eventHandlers;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -13,6 +13,7 @@ import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.*;
 import com.smartfoxserver.v2.extensions.*;
+import com.soueidan.sfs2x.AuthorizeExtension;
 
 public class LoginEventHandler extends BaseServerEventHandler {
 
@@ -28,6 +29,7 @@ public class LoginEventHandler extends BaseServerEventHandler {
 	
 	@Override
 	public void handleServerEvent(ISFSEvent event) throws SFSException {
+		trace("--------------------------------------------------------");
 		// Grab parameters from client request
 		userName = (String) event.getParameter(SFSEventParam.LOGIN_NAME);
 		cryptedPass = (String) event.getParameter(SFSEventParam.LOGIN_PASSWORD);
@@ -45,13 +47,15 @@ public class LoginEventHandler extends BaseServerEventHandler {
 			customRoomLogin(event);
 		}
 		
+		trace("Session loggin in: ", generateSession);
+		
 		session.setProperty("room", joinRoom);
 		session.setProperty("isRegistered", isRegistered);
 		session.setProperty("session", generateSession);
 	}
 	
 	private void customRoomLogin(ISFSEvent event) throws SFSLoginException {
-		trace("Login by session");
+		trace("Game Login by session");
 		
 		DBCollection users = AuthorizeExtension.users;
 		
@@ -61,19 +65,23 @@ public class LoginEventHandler extends BaseServerEventHandler {
 		DBCursor cursor = users.find(query);
 
         if ( !cursor.hasNext() ) {
-        	trace("User not found!");
+        	trace("Game Login User not found!", generateSession);
         	SFSErrorData data = new SFSErrorData(SFSErrorCode.LOGIN_BAD_PASSWORD);
 			data.addParameter(userName);
 			
 			throw new SFSLoginException("Login failed for user: "  + userName,data);
         } else {
-        	trace("User logged in!");
+        	trace("Game Login User logged in!", generateSession);
         	document = cursor.next();
         
-        	isRegistered = true;
+        	ISFSObject outData = (ISFSObject) event.getParameter(SFSEventParam.LOGIN_OUT_DATA);
+            outData.putUtfString(SFSConstants.NEW_LOGIN_NAME, document.get("nickname").toString());
+            
         	Boolean isGuest = (Boolean) document.get("is_guest");
-        	if ( isGuest ) {
+        	if ( isGuest == null ) {
         		isRegistered = false;
+        	} else {
+        		isRegistered = true;	
         	}
         }
 	}
