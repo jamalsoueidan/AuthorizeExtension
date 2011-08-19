@@ -1,4 +1,4 @@
-package com.soueidan.sfs2x.eventHandlers;
+package com.soueidan.extensions.authorize.eventHandlers;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -13,7 +13,7 @@ import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.*;
 import com.smartfoxserver.v2.extensions.*;
-import com.soueidan.sfs2x.AuthorizeExtension;
+import com.soueidan.extensions.authorize.core.AuthorizeExtension;
 
 public class UserLoginEventHandler extends BaseServerEventHandler {
 
@@ -79,9 +79,9 @@ public class UserLoginEventHandler extends BaseServerEventHandler {
             
         	Boolean isGuest = (Boolean) document.get("is_guest");
         	if ( isGuest == null ) {
-        		isRegistered = false;
+        		isRegistered = true;
         	} else {
-        		isRegistered = true;	
+        		isRegistered = false;	
         	}
         }
 	}
