@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.smartfoxserver.v2.api.*;
+import com.smartfoxserver.v2.api.CreateRoomSettings.RoomExtensionSettings;
 import com.smartfoxserver.v2.entities.*;
 import com.smartfoxserver.v2.entities.data.*;
 import com.smartfoxserver.v2.entities.variables.RoomVariable;
@@ -45,6 +46,8 @@ public class CreateCustomRoomRequestHandler extends BaseClientRequestHandler {
 	private void createRoom() {
 		trace("Create room name:", roomName);
 		
+		RoomExtensionSettings extension = new RoomExtensionSettings("TawleExtension", "com.soueidan.games.tawle.core.TawleExtension");
+		
 		CreateRoomSettings setting = new CreateRoomSettings();
 		setting.setGroupId(GROUP_GAME);
 		setting.setGame(true);
@@ -54,10 +57,10 @@ public class CreateCustomRoomRequestHandler extends BaseClientRequestHandler {
 		setting.setName(roomName);
 		setting.setHidden(false);
 		setting.setRoomVariables(getRoomVariables());
+		setting.setExtension(extension);
 		
 		try {
-			AuthorizeExtension extension = (AuthorizeExtension) getParentExtension();
-			getApi().createRoom(extension.getParentZone(), setting, userInviter, false, null, true, false);
+			getApi().createRoom(getParentExtension().getParentZone(), setting, userInviter, false, null, true, false);
 		} catch ( SFSCreateRoomException err ) {
 			trace(err.getMessage());
 		}
