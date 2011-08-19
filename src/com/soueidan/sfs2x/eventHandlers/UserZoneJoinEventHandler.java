@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.smartfoxserver.v2.core.*;
 import com.smartfoxserver.v2.entities.*;
+import com.smartfoxserver.v2.entities.data.ISFSObject;
+import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.entities.variables.SFSUserVariable;
 import com.smartfoxserver.v2.entities.variables.UserVariable;
 import com.smartfoxserver.v2.exceptions.SFSException;
@@ -24,6 +26,8 @@ public class UserZoneJoinEventHandler extends BaseServerEventHandler {
 		UserVariable isRegistered = new SFSUserVariable("isRegistered", user.getSession().getProperty("isRegistered"));
 		UserVariable session = new SFSUserVariable("session", user.getSession().getProperty("session"));
 		
+		session.setHidden(true);
+		
 		List<UserVariable> userVariables = Arrays.asList(isRegistered, session);
 		getApi().setUserVariables(user, userVariables);
 
@@ -35,11 +39,19 @@ public class UserZoneJoinEventHandler extends BaseServerEventHandler {
 		
 		if ( joinRoomName.equals(AuthorizeExtension.LOBBY)) {
 			getApi().subscribeRoomGroup(user, CreateCustomRoomRequestHandler.GROUP_GAME);
+			sendSessionKey(user, room);
 		}
 		
-		getApi().joinRoom(user, room, null, false, null, true, true);
+		getApi().joinRoom(user, room); 
 
 		trace("--------------------------------------------------------");
+	}
+
+	private void sendSessionKey(User user, Room room) {
+		ISFSObject params = new SFSObject();
+		params.putUtfString("session", user.getSession().getProperty("session").toString());
+		getApi().sendExtensionResponse("SESSION_KEY", params, user, room, false);
+		
 	}
 
 }
