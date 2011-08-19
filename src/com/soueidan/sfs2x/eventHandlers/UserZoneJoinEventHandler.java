@@ -50,7 +50,7 @@ public class UserZoneJoinEventHandler extends BaseServerEventHandler {
 	private void sendSessionKey(User user, Room room) {
 		ISFSObject params = new SFSObject();
 		params.putUtfString("session", user.getSession().getProperty("session").toString());
-		getApi().sendExtensionResponse("SESSION_KEY", params, user, room, false);
+		getApi().sendExtensionResponse("sessionKey", params, user, room, false);
 		
 	}
 
