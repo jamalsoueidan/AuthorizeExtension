@@ -9,9 +9,10 @@ import com.smartfoxserver.v2.entities.variables.SFSUserVariable;
 import com.smartfoxserver.v2.entities.variables.UserVariable;
 import com.smartfoxserver.v2.exceptions.SFSException;
 import com.smartfoxserver.v2.extensions.BaseServerEventHandler;
+import com.soueidan.sfs2x.AuthorizeExtension;
 import com.soueidan.sfs2x.requestHandlers.CreateCustomRoomRequestHandler;
 
-public class ZoneJoinEventHandler extends BaseServerEventHandler {
+public class UserZoneJoinEventHandler extends BaseServerEventHandler {
 
 	@Override
 	public void handleServerEvent(ISFSEvent event) throws SFSException {		
@@ -32,8 +33,11 @@ public class ZoneJoinEventHandler extends BaseServerEventHandler {
 			throw new SFSException("The " + joinRoomName + " Room was not found!");
 		}
 		
-		//getApi().sendExtensionResponse("", arg1, arg2, arg3, arg4)
-		getApi().joinRoom(user, room);
+		if ( joinRoomName.equals(AuthorizeExtension.LOBBY)) {
+			getApi().subscribeRoomGroup(user, CreateCustomRoomRequestHandler.GROUP_GAME);
+		}
+		
+		getApi().joinRoom(user, room, null, false, null, true, true);
 
 		trace("--------------------------------------------------------");
 	}

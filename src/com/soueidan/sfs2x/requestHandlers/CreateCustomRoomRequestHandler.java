@@ -15,7 +15,7 @@ import com.soueidan.sfs2x.AuthorizeExtension;
 
 public class CreateCustomRoomRequestHandler extends BaseClientRequestHandler {
 
-	static public String GROUP_GAME = "games";
+	static public String GROUP_GAME = "game";
 	static public int MAX_USERS = 2;
 	
 	private User userInviter;
@@ -52,9 +52,10 @@ public class CreateCustomRoomRequestHandler extends BaseClientRequestHandler {
 		setting.setAutoRemoveMode(SFSRoomRemoveMode.WHEN_EMPTY_AND_CREATOR_IS_GONE);
 		setting.setUseWordsFilter(true);
 		setting.setName(roomName);
+		setting.setHidden(false);
 		setting.setRoomVariables(getRoomVariables());
 		
-		try {			
+		try {
 			AuthorizeExtension extension = (AuthorizeExtension) getParentExtension();
 			getApi().createRoom(extension.getParentZone(), setting, userInviter, false, null, true, false);
 		} catch ( SFSCreateRoomException err ) {

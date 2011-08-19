@@ -15,7 +15,7 @@ import com.smartfoxserver.v2.exceptions.*;
 import com.smartfoxserver.v2.extensions.*;
 import com.soueidan.sfs2x.AuthorizeExtension;
 
-public class LoginEventHandler extends BaseServerEventHandler {
+public class UserLoginEventHandler extends BaseServerEventHandler {
 
 	private DBObject document;
 	private String userName;
@@ -40,7 +40,7 @@ public class LoginEventHandler extends BaseServerEventHandler {
 		String joinRoom = AuthorizeExtension.LOBBY;
 		
 		if ( customData == null || customData.getUtfString("session") == null ) {
-			lobbyLoginAsGuestOrRegistered(event);
+			lobbyLoginAsGuestOrRegistered(event); 
 		} else {
 			joinRoom = customData.getUtfString("room");
 			generateSession = customData.getUtfString("session");
