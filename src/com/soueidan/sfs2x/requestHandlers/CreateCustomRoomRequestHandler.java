@@ -52,6 +52,7 @@ public class CreateCustomRoomRequestHandler extends BaseClientRequestHandler {
 		setting.setGroupId(GROUP_GAME);
 		setting.setGame(true);
 		setting.setMaxUsers(MAX_USERS);
+		setting.setDynamic(true);
 		setting.setAutoRemoveMode(SFSRoomRemoveMode.WHEN_EMPTY_AND_CREATOR_IS_GONE);
 		setting.setUseWordsFilter(true);
 		setting.setName(roomName);
