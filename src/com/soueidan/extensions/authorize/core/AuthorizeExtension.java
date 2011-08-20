@@ -48,7 +48,7 @@ public class AuthorizeExtension extends SFSExtension implements ISFSExtension {
 		
 		addRequestHandlers();
 		
-		addTasks();
+		//addTasks();
 	}
 	
 	public class GameGroupUpdateListTask implements Runnable {

@@ -20,7 +20,7 @@ public class UserLoginEventHandler extends BaseServerEventHandler {
 	private DBObject document;
 	private String userName;
 	private String cryptedPass;
-	private SFSObject customData;
+	//private SFSObject customData;
 	
 	private String generateSession;
 	private Boolean isRegistered;
@@ -35,17 +35,17 @@ public class UserLoginEventHandler extends BaseServerEventHandler {
 		cryptedPass = (String) event.getParameter(SFSEventParam.LOGIN_PASSWORD);
 		session = (ISession) event.getParameter(SFSEventParam.SESSION);
 		
-		customData = (SFSObject) event.getParameter(SFSEventParam.LOGIN_IN_DATA);
+		//customData = (SFSObject) event.getParameter(SFSEventParam.LOGIN_IN_DATA);
 		
 		String joinRoom = AuthorizeExtension.LOBBY;
 		
-		if ( customData == null || customData.getUtfString("session") == null ) {
+		//if ( customData == null || customData.getUtfString("session") == null ) {
 			lobbyLoginAsGuestOrRegistered(event); 
-		} else {
+		/*} else {
 			joinRoom = customData.getUtfString("room");
 			generateSession = customData.getUtfString("session");
 			customRoomLogin(event);
-		}
+		}*/
 		
 		trace("Session loggin in: ", generateSession);
 		

@@ -25,6 +25,8 @@ public class UserZoneJoinEventHandler extends BaseServerEventHandler {
 		user = (User) event.getParameter(SFSEventParam.USER); 
 		joinRoomName = (String) user.getSession().getProperty("room");
 		
+		joinRoomName = "testerne";
+		
 		trace("Joining room:", joinRoomName);
 		
 		setUserVariables();
