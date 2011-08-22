@@ -10,7 +10,6 @@ import com.mongodb.*;
 import com.smartfoxserver.bitswarm.sessions.ISession;
 import com.smartfoxserver.v2.core.*;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
-import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.*;
 import com.smartfoxserver.v2.extensions.*;
 import com.soueidan.extensions.authorize.core.AuthorizeExtension;

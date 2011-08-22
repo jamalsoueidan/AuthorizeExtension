@@ -2,10 +2,8 @@ package com.soueidan.extensions.authorize.core;
 
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import com.mongodb.*;
-import com.smartfoxserver.v2.SmartFoxServer;
 import com.smartfoxserver.v2.core.SFSEventType;
 import com.smartfoxserver.v2.entities.Room;
 import com.smartfoxserver.v2.entities.User;
@@ -119,13 +117,6 @@ public class AuthorizeExtension extends SFSExtension implements ISFSExtension {
 	private void addEventHandlers() {
 		addEventHandler(SFSEventType.USER_LOGIN, UserLoginEventHandler.class);
 		addEventHandler(SFSEventType.USER_JOIN_ZONE, UserZoneJoinEventHandler.class);
-		//addEventHandler(SFSEventType.USER_JOIN_ROOM, UserJoinRoomEventHandler.class);
-	}
-
-
-	private void addTasks() {
-		SmartFoxServer sfs = SmartFoxServer.getInstance();
-		taskHandle = sfs.getTaskScheduler().scheduleAtFixedRate(new GameGroupUpdateListTask(), 0, 8, TimeUnit.SECONDS);
 	}
 
 	@Override
